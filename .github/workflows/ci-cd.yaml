@@ -1,0 +1,31 @@
+name: pre-commit
+'on':
+  pull-request:
+    push:
+        branches:
+        - '*'
+        name: pre-commit
+        'on':
+            pull-request:
+                push:
+                    branches:
+                        - '*'
+        jobs:
+            build:
+                runs-on: ubuntu-latest
+                strategy: null
+                matrix:
+                    node:
+                        - 14
+                        - 16
+                        - 18
+                name: 'Node ${{ matrix.node }} sample'
+                steps:
+                    -
+                        uses: actions/checkout@v4
+                    -
+                        name: Setup node
+                uses: actions/setup-node@v4
+                with:
+                    node-version: '${{ matrix.node }}'
+                run: npm ci npm test
